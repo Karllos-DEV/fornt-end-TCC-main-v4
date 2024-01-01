@@ -1,0 +1,25 @@
+.editbg {
+    background: rgb(9, 212, 226);
+    backdrop-filter: blur(50px);
+    background: linear-gradient(90deg, #052b92 0%, rgb(15, 201, 201) 50%, rgb(1, 217, 255) 100%);
+    color: white;
+    border-radius: 10px;
+    width: 400px;
+    padding: 20px;
+}
+
+.BC {
+    background: none;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+}
+.add{
+    margin-top: 5em;
+}
+
+.previmg{
+   margin: 50px;
+   margin-left: 80px;
+}
