@@ -1,7 +1,6 @@
 
 .add1 {
     background: rgb(135, 0, 170);
-    backdrop-filter: blur(50px);
     background: linear-gradient(90deg, rgba(135, 0, 170, 1) 0%, rgba(103, 28, 174, 1) 50%, rgba(67, 52, 174, 1) 100%);
     color: white;
     border-radius: 10px;

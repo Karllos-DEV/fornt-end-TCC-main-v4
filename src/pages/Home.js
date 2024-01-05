@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import './Home.css';
-import Cards2 from "../layout/Cards2"; // Importando o componente Cards2
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import dadoService from "../services/phonebook";
@@ -8,6 +8,8 @@ import dadoService from "../services/phonebook";
 function Home() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Adicione esta linha
+  const urlBase = 'http://localhost:3001/images/'; // Adicione esta linha
 
   useEffect(() => {
     fetchData(); // Carrega os dados iniciais
@@ -21,19 +23,21 @@ function Home() {
       })
       .catch((error) => {
         if (error.response) {
-          // O servidor respondeu com um status de erro
           console.error("Erro na requisição:", error.response);
         } else if (error.request) {
-          // A requisição foi feita, mas não houve resposta do servidor
           console.error("Não foi possível se conectar ao servidor.");
           setError(
             "Não foi possível se conectar ao servidor. Verifique sua conexão de rede."
           );
         } else {
-          // Algo aconteceu na configuração da requisição que causou o erro
           console.error("Erro na configuração da requisição:", error.message);
         }
       });
+  };
+
+  const handlePostClick = (postId) => {
+    // Navegar para a página Coment com o ID do post
+    navigate(`/coment/${postId}`);
   };
 
   return (
@@ -48,8 +52,29 @@ function Home() {
         ) : (
           <>
             <div className="my-3">
-              
-              <Cards2 posts={posts} />
+              {posts.map((post) => (
+                <div className='col-sm-4' key={post.id}>
+                  <div className='card mb-3'>
+                    <img
+                      src={urlBase + post.foto}
+                      className='card-img-top'
+                      alt='foto'
+                    />
+                    <div className='card-body'>
+                      <h5 className='card-title'>{post.nome}</h5>
+                      <p className='card-text '>
+                        <i className="bi bi-chat-dots"></i> {post.descricao}
+                      </p>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => handlePostClick(post.id)}
+                      >
+                        Ver Comentários
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </>
         )}

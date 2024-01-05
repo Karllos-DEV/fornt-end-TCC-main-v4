@@ -3,17 +3,18 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
+import './Login.css';
 
 function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+ const [username, setUsername] = useState("");
+ const [password, setPassword] = useState("");
+ const [error, setError] = useState(null);
 
-  const navigate = useNavigate();
+ const navigate = useNavigate();
 
-  const { signin } = useAuth();
+ const { signin } = useAuth();
 
-  const handleLogin = async (event) => {
+ const handleLogin = async (event) => {
     event.preventDefault();
 
     try {
@@ -31,10 +32,10 @@ function Login() {
         setError(null); // Limpa a mensagem de erro após 5 segundos
       }, 5000);
     }
-  };
+ };
 
-  return (
-    <div className='d-flex flex-column min-vh-100'>
+ return (
+    <div className="d-flex flex-column min-vh-100">
       <Header />
 
       <div className="container mt-3 animate__animated animate__fadeIn">
@@ -44,7 +45,7 @@ function Login() {
         <form className="bg-light p-4 mx-auto my-3">
           <div className="mb-3">
             <label htmlFor="username" className="form-label">
-             E-mail:
+              E-mail:
             </label>
             <div className="input-group">
               <span className="input-group-text">
@@ -91,7 +92,7 @@ function Login() {
       </div>
       <Footer />
     </div>
-  );
+ );
 }
 
 export default Login;

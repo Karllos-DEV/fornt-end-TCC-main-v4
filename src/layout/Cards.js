@@ -1,14 +1,12 @@
 import { Link } from 'react-router-dom'
 import { format } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
-
 import './Cards.css'
 import { useState } from 'react'
 
-function Cards({ posts, handleDelete}) {
+function Cards({ posts, handleDelete }) {
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [taskIdToDelete, setTaskIdToDelete] = useState(null)
-
 
   const openConfirmation = (id) => {
     setTaskIdToDelete(id)
@@ -36,8 +34,9 @@ function Cards({ posts, handleDelete}) {
       </div>
     )
   }
+
   return (
-    <div className='row' >
+    <div className='row'>
       {posts.map((post) => (
         <div className='col-sm-4' key={post.id}>
           <div className='card mb-3'>
@@ -48,19 +47,19 @@ function Cards({ posts, handleDelete}) {
             />
             <div className='card-body'>
               <h5 className='card-title'>{post.nome}</h5>
-              <p className='card-text '>
-              <i class="bi bi-chat-dots"></i> {post.descricao}
+              <p className='card-text'>
+                <i className="bi bi-chat-dots"></i> {post.descricao}
               </p>
             </div>
             <div className='card-footer text-muted'>
               <Link to={`/${post.id}`} className='btn btn-primary'>
-                <i class="bi bi-wrench"></i> Editar
+                <i className="bi bi-wrench"></i> Editar
               </Link>
               <button
                 className='btn btn-secondary mx-2'
                 onClick={() => openConfirmation(post.id)}
               >
-                <i class="bi bi-trash-fill"></i> Excluir
+                <i className="bi bi-trash-fill"></i> Excluir
               </button>
             </div>
           </div>

@@ -4,7 +4,7 @@ import useAuth from "../hooks/useAuth";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import MPubli from "../pages/MPubli";
-
+import Coment from "../pages/Coment";
 import Registro from "../pages/Registro";
 import Editar from "../pages/Editar";
 import ContactPage from "../pages/ContactPage";
@@ -28,6 +28,8 @@ const RoutesApp = () => {
           <Route path="/cancel" element={<MPubli />} />
           <Route path="/sobre" element={<ContactPage />} />
           <Route path="/confirm" element={<MPubli />} />
+          <Route path="/coment" element={<Coment />} />
+          <Route path="/coment/:postId" element={<Coment />} />
           <Route path="*" element={<Home />} />
         </Routes>
       </Fragment>
