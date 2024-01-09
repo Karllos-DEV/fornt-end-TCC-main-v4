@@ -35,14 +35,14 @@ function Login() {
  };
 
  return (
-    <div className="d-flex flex-column min-vh-100">
+    <div className="d-flex flex-column min-vh-100 main">
       <Header />
 
-      <div className="container mt-3 animate__animated animate__fadeIn">
-        <h2 className="text-center">Login</h2>
+      <div className="container mt-5 p-5 animate__animated animate__fadeIn ">
+        <h2 className="text-center Tlog">Login</h2>
         {error && <div className="alert alert-danger">{error}</div>}
 
-        <form className="bg-light p-4 mx-auto my-3">
+        <form className=" p-4 mx-auto my-3 log1">
           <div className="mb-3">
             <label htmlFor="username" className="form-label">
               E-mail:

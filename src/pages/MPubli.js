@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import './Home.css'
+import axios from "axios"; // Importe a biblioteca axios
+import './Home.css';
 import dadoService from "../services/phonebook";
-
-
-// import Table from '../layout/Table'
 import Input from "../layout/Input";
 import Cards from "../layout/Cards";
 import Header from "../layout/Header";
@@ -14,71 +12,69 @@ function Home() {
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
   const [foto, setFoto] = useState(null);
-  const [fotoPreview, setFotoPreview] = useState(null); // Adicionando estado para a prévia da imagem
+  const [fotoPreview, setFotoPreview] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchData(); // Carrega os dados iniciais
+    fetchData();
   }, []);
 
-  const fetchData = () => {
-    dadoService
-      .getAll()
-      .then((response) => {
-        setPosts(response.data);
-        setShowForm(false);
-      })
-      .catch((error) => {
-        if (error.response) {
-          // O servidor respondeu com um status de erro
-          console.error("Erro na requisição:", error.response);
-        } else if (error.request) {
-          // A requisição foi feita, mas não houve resposta do servidor
-          console.error("Não foi possível se conectar ao servidor.");
-          setError(
-            "Não foi possível se conectar ao servidor. Verifique sua conexão de rede."
-          );
-        } else {
-          // Algo aconteceu na configuração da requisição que causou o erro
-          console.error("Erro na configuração da requisição:", error.message);
-        }
-      });
+  const fetchData = async () => {
+    try {
+      const response = await dadoService.getAll();
+      setPosts(response.data);
+      setShowForm(false);
+    } catch (error) {
+      handleFetchError(error);
+    }
+  };
+
+  const handleFetchError = (error) => {
+    if (error.response) {
+      console.error("Erro na requisição:", error.response);
+    } else if (error.request) {
+      console.error("Não foi possível se conectar ao servidor.");
+      setError("Não foi possível se conectar ao servidor. Verifique sua conexão de rede.");
+    } else {
+      console.error("Erro na configuração da requisição:", error.message);
+    }
   };
 
   const addDado = async (event) => {
     event.preventDefault();
-    const dadoObject = {
-      nome,
-      descricao,
-      foto,
-    };
+    const formData = new FormData(event.target);
 
-    await dadoService.create(dadoObject);
+    try {
+      console.log('URL:', 'http://localhost:3001/imagens');
+      console.log('FormData:', formData);
 
-    setFoto(null);
-    setFotoPreview(null);// Limpar a imagem após o envio
+      await axios.post('http://localhost:3001/imagens', formData);
 
-    // Após a criação, atualize a lista de dados chamando fetchData novamente
-    fetchData();
+      console.log('Envio bem-sucedido!');
+      // Lógica adicional, como recarregar os dados após o envio bem-sucedido.
+      fetchData();
+    } catch (error) {
+      console.error('Erro ao enviar dados:', error);
+      // Lógica para lidar com erros, como exibir uma mensagem ao usuário.
+    } finally {
+      setFoto(null);
+      setFotoPreview(null);
+    }
   };
 
   const handleNomeChange = (event) => {
-    // console.log(event.target.value);
     setNome(event.target.value);
   };
 
-  const handleDescricaochange = (event) => {
-    // console.log(event.target.value);
+  const handleDescricaoChange = (event) => {
     setDescricao(event.target.value);
   };
-
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFoto(file);
 
-    // Exibindo uma prévia da imagem
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -95,16 +91,18 @@ function Home() {
   };
 
   const handleDelete = async (id) => {
-    await dadoService.remove(id);
-    // Após a exclusão, atualize a lista de dados chamando fetchData novamente
-    fetchData();
+    try {
+      await dadoService.remove(id);
+      fetchData();
+    } catch (error) {
+      handleFetchError(error);
+    }
   };
 
   return (
-    <div>
+    <div className="main">
       <Header />
       <div className="container telaadd">
-
         <h2 className="mt-2"></h2>
         {error ? (
           <p className="alert alert-warning" role="alert">
@@ -112,14 +110,13 @@ function Home() {
           </p>
         ) : (
           <>
-            <button onClick={toggleForm} className=" add ">
-              {showForm ? "Cancelar" : <i class="bi bi-plus-lg" ></i>}
+            <button onClick={toggleForm} className="add">
+              {showForm ? "Cancelar" : <i className="bi bi-plus-lg"></i>}
             </button>
 
             {showForm ? (
               <>
-                
-                <form onSubmit={addDado} className="subtle add1 p-2 ">
+                <form onSubmit={addDado} className="subtle add1 p-2" encType="multipart/form-data">
                   <Input
                     textLabel="nome"
                     text="Nome"
@@ -133,17 +130,16 @@ function Home() {
                     text="Descrição"
                     inputType="text"
                     textPlaceholder="Digite sua Descrição"
-                    handleChange={handleDescricaochange}
+                    handleChange={handleDescricaoChange}
                     isPhone={false}
                   />
 
-
-                  <div className="form-group ">
+                  <div className="form-group">
                     <label htmlFor="foto">Foto: </label>
                     <input
                       type="file"
                       id="foto"
-                      className="form-control-file  m-2"
+                      className="form-control-file m-2"
                       onChange={handleFileChange}
                     />
                     {fotoPreview && (
@@ -154,20 +150,19 @@ function Home() {
                       />
                     )}
                   </div>
-                  <button className=" BC mt-4">Cadastrar</button>
+                  <button className="BC mt-4">Cadastrar</button>
                 </form>
                 <br />
               </>
             ) : (
               <div className="my-3">
-                
                 <Cards posts={posts} handleDelete={handleDelete} />
               </div>
             )}
           </>
         )}
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

@@ -34,4 +34,10 @@
     padding: 10px;
     border-radius: 5px;
   }
-  
+  .main{ 
+    background-color: black;
+    color: white;
+  }
+  .poC{
+  border: white solid 1px;
+  }

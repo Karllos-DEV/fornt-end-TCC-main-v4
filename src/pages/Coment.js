@@ -49,7 +49,7 @@ function Coment() {
       setError('O comentário não pode estar vazio.');
       return;
     }
-  
+
     // Envia o novo comentário para o backend
     dadoService.createComment(postId, { comentario: newComment })
       .then(() => {
@@ -67,41 +67,46 @@ function Coment() {
 
 
   return (
-    <div className="coment-container container mt-5">
+    <div className=" mt-5 main">
       <Header />
-      {/* Exibe o post aqui */}
-      <h2 className="post-title">{post?.nome}</h2>
-      <p className="post-description">{post?.descricao}</p>
-
-      {/* Exibe os comentários existentes */}
-      <h3>Comentários:</h3>
-      {comments.map((comment) => (
-        <div key={comment.id} className="mb-3">
-          <p className="bg-light p-2">{comment.comentario}</p>
-          {/* Adicione outros campos conforme necessário */}
+      <div className='p-5'>
+        {/* Exibe o post aqui */}
+        <div>
+        <h2 className="post-title ">{post?.nome}</h2>
+        <p className="post-description">{post?.descricao}</p>
         </div>
-      ))}
 
-      {/* Exibe o erro, se houver */}
-      {error && (
-        <div className="alert alert-danger" role="alert">
-          {error}
+        {/* Exibe os comentários existentes */}
+        <h3>Comentários:</h3>
+        {comments.map((comment) => (
+          <div key={comment.id} className="mb-3">
+            <p className="bg-light p-2">{comment.comentario}</p>
+            {/* Adicione outros campos conforme necessário */}
+          </div>
+        ))}
+
+        {/* Exibe o erro, se houver */}
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
+
+        {/* Formulário para adicionar novos comentários */}
+        <div className="comment-form mt-3">
+          <textarea
+            className="form-control"
+            rows="4"
+            placeholder="Adicione um comentário..."
+            value={newComment}
+            onChange={handleCommentChange}
+          />
+          <button className="btn btn-primary mt-2" onClick={submitComment}>Enviar Comentário</button>
         </div>
-      )}
-
-      {/* Formulário para adicionar novos comentários */}
-      <div className="comment-form mt-3">
-        <textarea
-          className="form-control"
-          rows="4"
-          placeholder="Adicione um comentário..."
-          value={newComment}
-          onChange={handleCommentChange}
-        />
-        <button className="btn btn-primary mt-2" onClick={submitComment}>Enviar Comentário</button>
       </div>
       <Footer />
     </div>
+
   );
 }
 

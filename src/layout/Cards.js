@@ -1,39 +1,33 @@
-import { Link } from 'react-router-dom'
-import { format } from 'date-fns'
-import ptBR from 'date-fns/locale/pt-BR'
-import './Cards.css'
-import { useState } from 'react'
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import axios from 'axios';
+import './Cards.css';
 
 function Cards({ posts, handleDelete }) {
-  const [showConfirmation, setShowConfirmation] = useState(false)
-  const [taskIdToDelete, setTaskIdToDelete] = useState(null)
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [taskIdToDelete, setTaskIdToDelete] = useState(null);
 
   const openConfirmation = (id) => {
-    setTaskIdToDelete(id)
-    setShowConfirmation(true)
-  }
+    console.log('Excluir post ID:', id);
+    setTaskIdToDelete(id);
+    setShowConfirmation(true);
+  };
 
   const closeConfirmation = () => {
-    setTaskIdToDelete(null)
-    setShowConfirmation(false)
-  }
+    setTaskIdToDelete(null);
+    setShowConfirmation(false);
+  };
 
-  const urlBase = 'http://localhost:3001/images/'
-
-  const confirmDelete = (id) => {
+  const confirmDelete = async () => {
+  try {
     if (taskIdToDelete !== null) {
-      handleDelete(taskIdToDelete)
-      closeConfirmation()
+      await handleDelete(taskIdToDelete);
+      closeConfirmation();
     }
+  } catch (error) {
+    console.error('Erro ao excluir post:', error);
   }
-
-  if (posts.length === 0) {
-    return (
-      <div>
-        <p>Não existem dados a serem exibidos!</p>
-      </div>
-    )
-  }
+};
 
   return (
     <div className='row'>
@@ -41,7 +35,7 @@ function Cards({ posts, handleDelete }) {
         <div className='col-sm-4' key={post.id}>
           <div className='card mb-3'>
             <img
-              src={urlBase + post.foto}
+              src={`http://localhost:3001/images/${post.foto}`}
               className='card-img-top'
               alt='foto'
             />
@@ -67,8 +61,8 @@ function Cards({ posts, handleDelete }) {
       ))}
 
       {showConfirmation && (
-        <div className='modal'>
-          <div className='modal-content'>
+        <div className='modal p-5'>
+          <div className='modal-content m-5 p-1'>
             <h4>Realmente deseja excluir?</h4>
             <button onClick={confirmDelete}>Sim</button>
             <button onClick={closeConfirmation}>Cancelar</button>
@@ -76,7 +70,7 @@ function Cards({ posts, handleDelete }) {
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export default Cards
+export default Cards;

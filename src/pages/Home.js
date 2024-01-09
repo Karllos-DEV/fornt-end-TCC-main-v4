@@ -41,9 +41,9 @@ function Home() {
   };
 
   return (
-    <div>
+    <div className="main">
       <Header />
-      <div className="container telaadd">
+      <div className="container telaadd m-5 p-3">
         <h2 className="mt-2"></h2>
         {error ? (
           <p className="alert alert-warning" role="alert">
@@ -51,22 +51,22 @@ function Home() {
           </p>
         ) : (
           <>
-            <div className="my-3">
+            <div className="my-3 ">
               {posts.map((post) => (
-                <div className='col-sm-4' key={post.id}>
+                <div className='col-sm-4 ' key={post.id}>
                   <div className='card mb-3'>
                     <img
                       src={urlBase + post.foto}
                       className='card-img-top'
                       alt='foto'
                     />
-                    <div className='card-body'>
+                    <div className='card-body '>
                       <h5 className='card-title'>{post.nome}</h5>
                       <p className='card-text '>
                         <i className="bi bi-chat-dots"></i> {post.descricao}
                       </p>
                       <button
-                        className="btn btn-primary"
+                        className="btnAD"
                         onClick={() => handlePostClick(post.id)}
                       >
                         Ver Comentários
